@@ -27,10 +27,11 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libjpeg-dev \
   openssl
 
-
+RUN apt install -y git
 RUN pip install --upgrade pip
 RUN pip install cryptography
-RUN pip insstall git+https://github.com/IvanChikishev/miio-vaccum-1c.git
+RUN pip install flask
+RUN pip install git+https://github.com/IvanChikishev/miio-vaccum-1c.git@main
 COPY main.py .
 
 CMD ["python", "main.py"]
