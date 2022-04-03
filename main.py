@@ -75,11 +75,11 @@ def clean_start():
 @app.route('/properties/clean_mode/<string:mode>')
 def clean_mode(mode):
     response = ACTION_STATE_MESSAGE.safe_substitute(success=0)
-    try:
-        device.set_property('clean_mode', int(mode))
-        response = ACTION_STATE_MESSAGE.safe_substitute(success=1)
-    finally:
-        return Response(response, mimetype="application/json")
+    # try:
+    device.set_property('clean_mode', int(mode))
+    response = ACTION_STATE_MESSAGE.safe_substitute(success=1)
+    # finally:
+    return Response(response, mimetype="application/json")
 
 
 if __name__ == '__main__':
