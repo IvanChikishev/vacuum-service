@@ -1,4 +1,4 @@
-from miio import DreameVacuumMiot
+from miio import DreameVacuumMiot, Gateway
 from flask import Flask, Response
 from string import Template
 
@@ -16,6 +16,28 @@ DEVICE_STATUS_MESSAGE = Template('{'
                                  '}')
 
 ACTION_STATE_MESSAGE = Template('{"success": $success}')
+
+
+@app.route('/sensor/temperature')
+def get_sensor_stata():
+    try:
+        service = Gateway("192.168.31.12", "7775744e5936547241637a4459594858")
+        service.discover_devices()
+
+        sensor_device = service.devices['lumi.158d00073a84b7']
+
+        template = Template('{"temperature": $temperature, "humidity": $humidity, "success": true}')
+
+        message = template.substitute(
+            temperature=sensor_device.get_property('temperature')[0] / 100,
+            humidity=sensor_device.get_property('humidity')[0] / 100
+        )
+
+    except Exception:
+        message = '{"success": false}'
+    finally:
+        return Response(message, mimetype="application/json")
+
 
 
 @app.route('/status')
